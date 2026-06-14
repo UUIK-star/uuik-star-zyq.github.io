@@ -1,0 +1,536 @@
+/* ===== Reset & Variables ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #1a1a1a;
+  --text: #f1f1f1;
+  --text-muted: #999;
+  --accent: #e8e8e8;
+  --glow: rgba(255, 255, 255, 0.55);
+  --font-display: 'ZCOOL KuaiLe', 'Inter', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ===== Header ===== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  pointer-events: none;
+}
+
+.logo,
+.menu-btn,
+.site-nav {
+  pointer-events: auto;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+}
+
+.menu-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+
+.menu-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.menu-btn.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-btn.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-btn.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(280px, 80vw);
+  height: 100dvh;
+  background: rgba(14, 14, 14, 0.96);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+}
+
+.site-nav.is-open {
+  transform: translateX(0);
+}
+
+.site-nav a {
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.site-nav a:hover {
+  opacity: 1;
+}
+
+/* ===== Scroll Snap ===== */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100dvh;
+}
+
+.page {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* ===== Page 1: Hero ===== */
+.hero-page {
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(6px) brightness(0.45);
+  transform: scale(1.05);
+}
+
+.hero-page .codrops_mwg {
+  position: relative;
+  z-index: 1;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5.5vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-title span {
+  display: block;
+}
+
+.hero-title span:last-child {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-top: 0.3em;
+}
+
+.hero-hint {
+  margin-top: 1.2rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Falling cards */
+.codrops_mwg .falling-card {
+  width: clamp(80px, 15vw, 140px);
+  height: clamp(80px, 15vw, 140px);
+  position: absolute;
+  object-fit: cover;
+  z-index: 5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.codrops_mwg .falling-card--circle {
+  border-radius: 50%;
+}
+
+.codrops_mwg .falling-card--heart {
+  clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+  transform-origin: center;
+}
+
+.codrops_mwg .falling-card--star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.codrops_mwg .medias img {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  animation: pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+}
+
+/* ===== Page 2: Video Jukebox (改为卡片轮播) ===== */
+.works-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem 2.5rem;
+  background: radial-gradient(ellipse at 50% 30%, #1e1e1e 0%, var(--bg) 70%);
+}
+
+.works-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.works-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.works-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 500;
+  margin-top: 0.4rem;
+  letter-spacing: 0.15em;
+}
+
+/* 3D Ring Carousel (适配卡片) */
+.carousel-stage {
+  width: 100%;
+  max-width: 1100px;
+  perspective: 1100px;
+  perspective-origin: 50% 42%;
+  margin-bottom: 2rem;
+}
+
+.carousel-track {
+  position: relative;
+  height: clamp(260px, 52vw, 460px);
+  transform-style: preserve-3d;
+  transform: rotateX(6deg);
+}
+
+.carousel-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.34, 1.1, 0.64, 1);
+  will-change: transform;
+}
+
+.carousel-floor {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  width: 72%;
+  height: 40px;
+  transform: translateX(-50%) rotateX(90deg);
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+/* 视频卡片改为静态封面卡片 */
+.video-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(200px, 42vw, 480px);
+  aspect-ratio: 16 / 9;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: opacity 0.85s ease, filter 0.85s ease;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  position: relative;
+  transform: translateZ(1px);
+}
+
+/* 卡片封面图样式 */
+.card-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* B站播放图标 */
+.bilibili-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath fill='%23FB7299' d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm137.6 625.7c-8.5 1.8-18.2.9-26.3-2.8-4.5-2-8.5-4.7-12.1-8-34.1-30.8-79.9-77.9-103.8-114.4-14.9-21.5-23.2-40.9-23.2-72.2 0-31.3 8.4-50.8 23.2-72.2 23.9-36.5 69.7-83.6 103.8-114.4 3.6-3.3 7.7-6 12.1-8 8.1-3.7 17.8-4.6 26.3-2.8 18.7 8 28.5 26.9 28.5 49v26.9c0 22.1-9.8 41-28.5 49-4.8 2.1-9 4.9-12.8 8.3-29.4 26.3-71.2 65.7-92.7 96.1-4.4 6.3-6.8 11.9-6.8 19.9 0 8 2.4 13.6 6.8 19.9 21.5 30.4 63.3 69.8 92.7 96.1 3.8 3.4 8 6.2 12.8 8.3 18.7 8 28.5 26.9 28.5 49V689c-.1 22.1-9.9 41-28.6 49z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 100%;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.video-card:hover .bilibili-icon {
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 1;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+  opacity: 1; /* 始终显示标题 */
+  z-index: 1;
+}
+
+.card-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+
+/* Controls (保留样式，移除播放/声音相关逻辑) */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  opacity: 0.7;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.ctrl-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ctrl-btn--main {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 1;
+}
+
+/* 隐藏播放/声音相关图标，只保留翻页 */
+.ctrl-btn .icon-play,
+.ctrl-btn .icon-pause,
+.ctrl-btn .icon-muted,
+.ctrl-btn .icon-unmuted,
+#playBtn,
+#muteBtn,
+#fullscreenBtn {
+  display: none !important;
+}
+
+/* Role tags */
+.role-tags {
+  margin-top: 2.5rem;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--glow), 0 0 30px rgba(255, 255, 255, 0.2);
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 6.5vw, 2.4rem);
+  }
+
+  .codrops_mwg .falling-card {
+    width: clamp(70px, 28vw, 120px);
+    height: clamp(70px, 28vw, 120px);
+  }
+
+  .works-page {
+    padding: 4.5rem 1rem 2rem;
+  }
+
+  .carousel-track {
+    height: clamp(200px, 58vw, 320px);
+    transform: rotateX(4deg);
+  }
+
+  .video-card {
+    width: clamp(160px, 52vw, 280px);
+  }
+
+  .controls-bar {
+    gap: 0.3rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .ctrl-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ctrl-btn--main {
+    width: 42px;
+    height: 42px;
+  }
+
+  .role-tags {
+    letter-spacing: 0.2em;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  /* 移动端B站图标缩小 */
+  .bilibili-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint,
+  .role-tags {
+    animation: none;
+  }
+
+  .video-card {
+    transition-duration: 0.01ms;
+  }
+}
