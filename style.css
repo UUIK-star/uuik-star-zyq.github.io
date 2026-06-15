@@ -9,11 +9,12 @@
 
 :root {
   --bg: #0e0e0e;
+  --bg-works: #e0f0fd; /* 网页第二页设置的浅蓝色背景色 */
   --surface: #1a1a1a;
   --text: #f1f1f1;
+  --text-dark: #222222; /* 浅蓝背景下使用的深色文字颜色 */
   --text-muted: #999;
-  --accent: #e8e8e8;
-  --glow: rgba(255, 255, 255, 0.55);
+  --text-muted-dark: #666;
   --font-display: 'ZCOOL KuaiLe', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 }
@@ -31,8 +32,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img,
-video {
+img {
   display: block;
   max-width: 100%;
 }
@@ -215,7 +215,6 @@ a {
   pointer-events: none;
 }
 
-/* Falling cards */
 .codrops_mwg .falling-card {
   width: clamp(80px, 15vw, 140px);
   height: clamp(80px, 15vw, 140px);
@@ -268,26 +267,29 @@ a {
   50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
 }
 
-/* ===== Page 2: Video Jukebox (改为卡片轮播) ===== */
+/* ===== Page 2: Works ===== */
 .works-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 5rem 1.5rem 2.5rem;
-  background: radial-gradient(ellipse at 50% 30%, #1e1e1e 0%, var(--bg) 70%);
+  background: var(--bg-works); /* 换成了设计好的浅蓝色背景 */
+  color: var(--text-dark); /* 修改该页整体文字颜色为深色，提升辨识度 */
+  overflow: hidden;
 }
 
 .works-header {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 5;
 }
 
 .works-label {
   font-size: 0.7rem;
   letter-spacing: 0.35em;
-  color: var(--text-muted);
-  text-transform: uppercase;
+  color: var(--text-muted-dark);
 }
 
 .works-title {
@@ -297,13 +299,59 @@ a {
   letter-spacing: 0.15em;
 }
 
-/* 3D Ring Carousel (适配卡片) */
+/* 3D 轮播台 + 云朵包裹层 */
 .carousel-stage {
   width: 100%;
   max-width: 1100px;
   perspective: 1100px;
   perspective-origin: 50% 42%;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+/* 纯 CSS 绘制飘浮的卡通云朵 */
+.carousel-stage::before,
+.carousel-stage::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 100px;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.05));
+}
+
+/* 左侧云朵 */
+.carousel-stage::before {
+  width: 120px;
+  height: 40px;
+  top: -20px;
+  left: -40px;
+  animation: floatCloudOne 8s ease-in-out infinite;
+}
+/* 右侧云朵 */
+.carousel-stage::after {
+  width: 150px;
+  height: 50px;
+  bottom: -10px;
+  right: -50px;
+  animation: floatCloudTwo 10s ease-in-out infinite;
+}
+
+/* 云朵微调造型的子影子细节 */
+.carousel-stage::before, .carousel-stage::after {
+  box-shadow: 
+    30px -20px 0 10px rgba(255, 255, 255, 0.85), 
+    70px -10px 0 0px rgba(255, 255, 255, 0.85);
+}
+
+@keyframes floatCloudOne {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-10px) translateX(5px); }
+}
+@keyframes floatCloudTwo {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(12px) translateX(-8px); }
 }
 
 .carousel-track {
@@ -331,12 +379,12 @@ a {
   width: 72%;
   height: 40px;
   transform: translateX(-50%) rotateX(90deg);
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.06) 0%, transparent 70%);
   pointer-events: none;
   filter: blur(8px);
 }
 
-/* 视频卡片改为静态封面卡片 */
+/* 视频卡片样式 */
 .video-card {
   position: absolute;
   top: 0;
@@ -353,42 +401,42 @@ a {
 .card-inner {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--surface);
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
   position: relative;
   transform: translateZ(1px);
 }
 
-/* 卡片封面图样式 */
 .card-cover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* B站播放图标 */
+/* 粉色圆底的播放图标 */
 .bilibili-icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath fill='%23FB7299' d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm137.6 625.7c-8.5 1.8-18.2.9-26.3-2.8-4.5-2-8.5-4.7-12.1-8-34.1-30.8-79.9-77.9-103.8-114.4-14.9-21.5-23.2-40.9-23.2-72.2 0-31.3 8.4-50.8 23.2-72.2 23.9-36.5 69.7-83.6 103.8-114.4 3.6-3.3 7.7-6 12.1-8 8.1-3.7 17.8-4.6 26.3-2.8 18.7 8 28.5 26.9 28.5 49v26.9c0 22.1-9.8 41-28.5 49-4.8 2.1-9 4.9-12.8 8.3-29.4 26.3-71.2 65.7-92.7 96.1-4.4 6.3-6.8 11.9-6.8 19.9 0 8 2.4 13.6 6.8 19.9 21.5 30.4 63.3 69.8 92.7 96.1 3.8 3.4 8 6.2 12.8 8.3 18.7 8 28.5 26.9 28.5 49V689c-.1 22.1-9.9 41-28.6 49z'/%3E%3C/svg%3E") no-repeat center;
-  background-size: 100%;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-  z-index: 2;
+  width: 54px;
+  height: 54px;
+  background-color: #fb7299;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath fill='%23ffffff' d='M768 512L320 832V192z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 54% center;
+  background-size: 45%;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(251, 114, 153, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 3;
 }
 
 .video-card:hover .bilibili-icon {
   transform: translate(-50%, -50%) scale(1.1);
-  opacity: 1;
+  box-shadow: 0 6px 18px rgba(251, 114, 153, 0.5);
 }
 
 .card-overlay {
@@ -396,27 +444,34 @@ a {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem 1.2rem;
+  padding: 2rem 1rem 1rem;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
-  opacity: 1; /* 始终显示标题 */
-  z-index: 1;
+  z-index: 2;
 }
 
 .card-title {
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
+  display: block;
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 0.05em;
 }
 
-/* Controls (保留样式，移除播放/声音相关逻辑) */
+/* ===== 修正后的左右控制栏布局 ===== */
 .controls-bar {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
+  justify-content: space-between; /* 按钮左右彻底撑开分布 */
+  width: 140px; /* 契合原本椭圆控制条的理想宽度 */
+  height: 52px;
+  padding: 0 6px;
+  background: rgba(255, 255, 255, 0.5); /* 浅色半透明胶囊背景 */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
 }
 
 .ctrl-btn {
@@ -426,111 +481,58 @@ a {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  opacity: 0.7;
-  transition: opacity 0.2s, background 0.2s;
+  color: #333333; /* 暗色图标，防止在白底控制条中看不清 */
+  opacity: 0.75;
+  transition: opacity 0.2s, background-color 0.2s, transform 0.2s;
 }
 
 .ctrl-btn:hover {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.05);
 }
 
-.ctrl-btn--main {
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.12);
-  opacity: 1;
+.ctrl-btn:active {
+  transform: scale(0.95);
 }
 
-/* 隐藏播放/声音相关图标，只保留翻页 */
-.ctrl-btn .icon-play,
-.ctrl-btn .icon-pause,
-.ctrl-btn .icon-muted,
-.ctrl-btn .icon-unmuted,
-#playBtn,
-#muteBtn,
-#fullscreenBtn {
-  display: none !important;
-}
-
-/* Role tags */
+/* 下方描述标签 */
 .role-tags {
-  margin-top: 2.5rem;
-  font-size: clamp(0.75rem, 2vw, 0.9rem);
-  letter-spacing: 0.35em;
-  color: var(--accent);
-  text-shadow: 0 0 12px var(--glow), 0 0 30px rgba(255, 255, 255, 0.2);
-  animation: glow 3s ease-in-out infinite alternate;
+  margin-top: 2rem;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  letter-spacing: 0.3em;
+  color: var(--text-muted-dark);
+  text-align: center;
+  position: relative;
+  z-index: 5;
 }
 
-@keyframes glow {
-  from { opacity: 0.6; }
-  to { opacity: 1; }
-}
-
-/* ===== Responsive ===== */
+/* ===== 移动端响应式兼容 ===== */
 @media (max-width: 768px) {
-  .site-header {
-    padding: 1rem 1.25rem;
-  }
-
   .hero-title {
     font-size: clamp(1.5rem, 6.5vw, 2.4rem);
   }
-
   .codrops_mwg .falling-card {
     width: clamp(70px, 28vw, 120px);
     height: clamp(70px, 28vw, 120px);
   }
-
   .works-page {
     padding: 4.5rem 1rem 2rem;
   }
-
+  .carousel-stage::before { width: 80px; height: 25px; top: -10px; left: -10px; }
+  .carousel-stage::after { width: 100px; height: 30px; bottom: -5px; right: -10px; }
   .carousel-track {
     height: clamp(200px, 58vw, 320px);
     transform: rotateX(4deg);
   }
-
   .video-card {
-    width: clamp(160px, 52vw, 280px);
+    width: clamp(170px, 54vw, 300px);
   }
-
-  .controls-bar {
-    gap: 0.3rem;
-    padding: 0.5rem 0.8rem;
-  }
-
-  .ctrl-btn {
-    width: 36px;
-    height: 36px;
-  }
-
-  .ctrl-btn--main {
-    width: 42px;
-    height: 42px;
-  }
-
-  .role-tags {
-    letter-spacing: 0.2em;
-    text-align: center;
-    padding: 0 1rem;
-  }
-
-  /* 移动端B站图标缩小 */
   .bilibili-icon {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-hint,
   .role-tags {
-    animation: none;
-  }
-
-  .video-card {
-    transition-duration: 0.01ms;
+    letter-spacing: 0.15em;
   }
 }
